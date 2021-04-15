@@ -1,30 +1,79 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
   <router-view />
 </template>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+* {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+img {
+  width: 100%;
+}
+.App {
+  display: grid;
+  place-content: center;
+  height: 100vh;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("~@/assets/bg.jpg");
+    filter: grayscale(100%) opacity(20%);
+  }
+}
+.container {
+  width: 90vw;
+  margin: auto;
 }
 
-#nav {
-  padding: 30px;
+.positive {
+  color: green;
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+.negative {
+  color: red;
+}
+.icons {
+  color: $blue-color;
+  font-size: 1.25rem;
+  margin: 0.25rem;
+  cursor: pointer;
+  transition: all 0.15s;
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+  &:hover {
+    color: $hover;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 400;
+}
+
+.input-error {
+  background-color: $error-color;
+  color: #fff;
+  opacity: 0.75;
+  &::placeholder {
+    color: #fff;
+  }
+}
+.primary-btn {
+  @include primary-btn($green-gradient, $green-inverse-gradient);
+}
+
+@media screen and(max-width: 750px) {
+  .App {
+    margin-top: 0;
   }
 }
 </style>
