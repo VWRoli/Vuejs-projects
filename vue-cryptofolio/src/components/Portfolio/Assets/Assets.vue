@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import AssetsHeader from './AssetsHeader';
 import AssetsTable from './AssetsTable';
 
@@ -67,6 +68,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['fetchCoinInfo']),
     async fetchCurrencies() {
       const res = await fetch(CURRENCY_URL);
       const data = await res.json();
@@ -74,6 +76,7 @@ export default {
     },
   },
   async created() {
+    this.fetchCoinInfo();
     this.currencies = await this.fetchCurrencies();
   },
 };

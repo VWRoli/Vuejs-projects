@@ -1,5 +1,4 @@
 <template>
-  <p>AssetList</p>
   <ListItem :key="coin.id" v-for="coin in coins" :coin="coin" />
 </template>
 

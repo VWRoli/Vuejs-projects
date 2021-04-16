@@ -1,5 +1,7 @@
 <template>
-  <AssetRow v-for="asset in allAssets" :key="asset.id" :asset="asset" />
+  <tbody>
+    <AssetRow v-for="coin in allCoinInfo" :key="coin.id" :coin="coin" />
+  </tbody>
 </template>
 
 <script>
@@ -11,7 +13,7 @@ export default {
   components: {
     AssetRow,
   },
-  computed: mapGetters(['allAssets']),
+  computed: mapGetters(['allCoinInfo']),
 };
 </script>
 
