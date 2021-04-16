@@ -9,6 +9,7 @@ const state = {
 };
 const getters = {
   allCoinInfo: (state) => state.coinInfo,
+  allAssets: (state) => state.assets,
   defaultCurrency: (state) => state.defaultCurrency,
 };
 const actions = {
@@ -36,7 +37,6 @@ const actions = {
 };
 const mutations = {
   setCoinInfo: (state, coins) => (state.coinInfo = coins),
-  setTodos: (state, todos) => (state.todos = todos),
 };
 
 export default {
