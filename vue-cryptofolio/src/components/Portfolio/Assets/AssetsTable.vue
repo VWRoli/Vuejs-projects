@@ -1,6 +1,6 @@
 <template>
   <tbody>
-    <AssetRow v-for="coin in allCoinInfo" :key="coin.id" :coin="coin" />
+    <AssetRow v-for="coin in allAssets" :key="coin.id" :coin="coin" />
   </tbody>
 </template>
 
@@ -13,8 +13,6 @@ export default {
   components: {
     AssetRow,
   },
-  computed: mapGetters(['allCoinInfo']),
+  computed: mapGetters(['allAssets']),
 };
 </script>
-
-<style></style>

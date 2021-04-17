@@ -2,13 +2,13 @@
   <section id="assets">
     <header class="assets-header">
       <h2 class="assets-title">Your Assets</h2>
-      <form action="/">
+      <form>
         <label html="currency">Default Currency:</label>
         <select name="currency" id="currency">
           <option
             value="currency"
             :key="currency"
-            v-for="currency in currencies"
+            v-for="currency in currencyTypes"
             :currency="currency"
           >
             {{ currency.toUpperCase() }}
@@ -28,7 +28,6 @@
         </select> -->
       </form>
       <i class="fas fa-sync-alt refresh-btn"></i>
-      <!-- <FaSyncAlt  onClick="{fetchCoinData}" /> -->
     </header>
     <table>
       <thead>
@@ -47,12 +46,14 @@
       <AssetsTable />
     </table>
 
-    <button type="button" class="clear-btn">Clear Assets</button>
+    <button type="button" class="clear-btn" @click="clearAssets">
+      Clear Assets
+    </button>
   </section>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import AssetsHeader from './AssetsHeader';
 import AssetsTable from './AssetsTable';
 
@@ -64,20 +65,20 @@ export default {
   },
   data() {
     return {
-      currencies: [],
+      currencyTypes: null,
     };
   },
   methods: {
-    ...mapActions(['fetchCoinInfo']),
+    ...mapActions(['clearAssets']),
     async fetchCurrencies() {
       const res = await fetch(CURRENCY_URL);
       const data = await res.json();
       return data;
     },
   },
+  computed: mapGetters(['defaultCurrency']),
   async created() {
-    this.fetchCoinInfo();
-    this.currencies = await this.fetchCurrencies();
+    this.currencyTypes = await this.fetchCurrencies();
   },
 };
 </script>
