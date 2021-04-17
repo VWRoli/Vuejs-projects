@@ -1,41 +1,51 @@
 <template>
   <tr>
     <td class="table-name">
-      <img :src="coin.image" :alt="coin.name" />
+      <img :src="correctCoin.image" :alt="correctCoin.name" />
       <p>
-        {{ coin.name }} <br />
-        <span class="symbol">{{ coin.symbol }}</span>
+        {{ correctCoin.name }} <br />
+        <span class="symbol">{{ correctCoin.symbol }}</span>
       </p>
     </td>
     <!-- PRICE -->
-    <td>{{ this.priceFormatter(coin.current_price, defaultCurrency) }}</td>
+    <td>
+      {{ this.priceFormatter(correctCoin.current_price, defaultCurrency) }}
+    </td>
     <!-- PRICE CHANGE % -->
     <td
-      :class="coin.price_change_percentage_24h > 0 ? 'positive' : 'negative'"
+      :class="
+        correctCoin.price_change_percentage_24h > 0 ? 'positive' : 'negative'
+      "
       class="percentage-change-row"
     >
-      {{ this.priceChangeFormatter(coin.price_change_percentage_24h) }}
+      {{ this.priceChangeFormatter(correctCoin.price_change_percentage_24h) }}
     </td>
 
     <!-- HOLDINGS -->
     <td class="holdings-row">
       {{
-        this.priceFormatter(coin.current_price * coin.holdings, defaultCurrency)
+        this.priceFormatter(
+          correctCoin.current_price * asset.holdings,
+          defaultCurrency
+        )
       }}
       <br />
 
       <span class="holdings">
-        {{ coin.holdings?.toFixed(4) }}
-        <span class="symbol">&nbsp;{{ coin.symbol }}</span>
+        {{ asset.holdings?.toFixed(4) }}
+        <span class="symbol">&nbsp;{{ correctCoin.symbol }}</span>
       </span>
     </td>
     <!--  PROFIT/LOSS  -->
     <td
       class="profit-row"
-      :class="coin.price_change_24h > 0 ? 'positive' : 'negative'"
+      :class="correctCoin.price_change_24h > 0 ? 'positive' : 'negative'"
     >
       {{
-        priceFormatter(coin.price_change_24h * coin.holdings, defaultCurrency)
+        priceFormatter(
+          correctCoin.price_change_24h * asset.holdings,
+          defaultCurrency
+        )
       }}
     </td>
     <!-- ACTIONS -->
@@ -47,7 +57,7 @@
       <button
         type="button"
         className="remove-btn"
-        @click="removeAsset(coin.id)"
+        @click="removeAsset(asset.id)"
       >
         <i class="far fa-minus-square icons" title="Remove transaction"></i>
       </button>
@@ -61,9 +71,13 @@ import { priceFormatter, priceChangeFormatter } from '../../../helpers';
 
 export default {
   name: 'AssetRow',
-
+  data() {
+    return {
+      correctCoin: {},
+    };
+  },
   props: {
-    coin: Object,
+    asset: Object,
   },
   methods: {
     ...mapActions(['removeAsset']),
@@ -74,7 +88,16 @@ export default {
     priceChangeFormatter(priceChange) {
       return priceChangeFormatter(priceChange);
     },
+    async setCorrectCoin() {
+      this.correctCoin = await this.allCoinsInfo.filter(
+        (coin) => coin.id === this.asset.id
+      );
+      console.log(this.correctCoin);
+    },
   },
-  computed: mapGetters(['defaultCurrency', 'allAssets']),
+  computed: mapGetters(['defaultCurrency', 'allAssets', 'allCoinsInfo']),
+  created() {
+    this.setCorrectCoin();
+  },
 };
 </script>
