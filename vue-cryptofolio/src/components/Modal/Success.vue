@@ -8,12 +8,12 @@
 
     <h2 v-else>You successfully added your new asset!</h2>
 
-    <button type="button" className="primary-btn">
+    <button type="button" className="primary-btn" @click="closeModal">
       <router-link to="/portfolio">Go to my Portfolio</router-link>
     </button>
     <p v-if="!isEditAsset">
       Or add another
-      <router-link to="/addasset">
+      <router-link to="/addasset" @click="closeModal">
         <span className="back-to-addassets"> Asset </span>
       </router-link>
     </p>
@@ -21,10 +21,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'Success',
+  methods: mapActions(['closeModal']),
   computed: mapGetters(['isEditAsset']),
 };
 </script>

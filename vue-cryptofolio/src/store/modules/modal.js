@@ -8,6 +8,7 @@ const getters = {
   isModalOpen: (state) => state.isModalOpen,
   displaySuccess: (state) => state.displaySuccess,
   isEditAsset: (state) => state.isEditAsset,
+  activeCoin: (state) => state.activeCoin,
 };
 const actions = {
   openModal({ commit }) {
@@ -22,6 +23,9 @@ const actions = {
   openEditAsset({ commit }) {
     commit('OPEN_EDIT_ASSET');
   },
+  setActiveCoin({ commit }, id) {
+    commit('SET_ACTIVE_COIN', id);
+  },
 };
 const mutations = {
   OPEN_MODAL: (state) => (state.isModalOpen = true),
@@ -30,8 +34,12 @@ const mutations = {
     state.displaySuccess = false;
     state.isEditAsset = false;
   },
-  OPEN_SUCCESS: (state) => (state.displaySuccess = true),
+  OPEN_SUCCESS: (state) => {
+    state.displaySuccess = true;
+    state.isEditAsset = false;
+  },
   OPEN_EDIT_ASSET: (state) => (state.isEditAsset = true),
+  SET_ACTIVE_COIN: (state, id) => (state.activeCoin = id),
 };
 
 export default {

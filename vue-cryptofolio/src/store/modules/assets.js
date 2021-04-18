@@ -64,6 +64,9 @@ const actions = {
   removeAsset({ commit }, id) {
     commit('REMOVE_ASSET', id);
   },
+  editAsset({ commit }, coin, holdings) {
+    commit('EDIT_COIN', coin, holdings);
+  },
 };
 const mutations = {
   SET_COINS_INFO: (state, coins) => (state.coinsInfo = coins),
@@ -73,6 +76,10 @@ const mutations = {
   SET_LOADING: (state) => (state.isLoading = true),
   DISABLE_LOADING: (state) => (state.isLoading = false),
   SET_ERROR: (state) => (state.isError = true),
+  EDIT_COIN: (state, coin) => {
+    const deleteCoin = state.assets.filter((asset) => asset.id !== coin.id);
+    state.assets = [...deleteCoin, coin];
+  },
 };
 
 export default {

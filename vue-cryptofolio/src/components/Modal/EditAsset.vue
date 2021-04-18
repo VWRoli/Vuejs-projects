@@ -29,7 +29,7 @@
         <h3>
           Your Holdings:
           <span>
-            {{ this.holdings }} <span>{{ coin.symbol }}</span>
+            {{ this.correctAsset.holdings }} <span>{{ coin.symbol }}</span>
           </span>
         </h3>
         <h3>
@@ -37,20 +37,21 @@
           <span>
             {{
               priceFormatter(
-                coin.current_price * this.holdings,
+                coin.current_price * this.correctAsset.holdings,
                 defaultCurrency
               )
             }}
           </span>
         </h3>
       </div>
-      <form>
+      <form @submit="onSubmit">
         <label for="holdings">Quantity: </label>
         <input
           type="number"
           name="holdings"
           id="holdings"
-          :value="this.holdings"
+          required
+          v-model="newHoldings"
         />
 
         <button type="submit" class="primary-btn">Edit Asset</button>
@@ -62,7 +63,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import { priceFormatter, priceChangeFormatter } from '../../helpers';
 import Loading from '../Loading';
 import Error from '../Error';
@@ -78,14 +79,16 @@ export default {
       isLoading: true,
       isError: false,
       coin: {},
-      holdings: '',
+      correctAsset: {},
+      newHoldings: '',
     };
   },
   methods: {
+    ...mapActions(['editAsset', 'openSuccess']),
     async fetchCoin() {
       try {
         const res = await fetch(
-          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${this.defaultCurrency}&ids=bitcoin`
+          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${this.defaultCurrency}&ids=${this.activeCoin}`
         );
         if (!res.ok) throw new Error(`${res.status} Coin not found`);
 
@@ -98,6 +101,20 @@ export default {
         this.isError = true;
       }
     },
+    onSubmit(e) {
+      e.preventDefault();
+      this.openSuccess();
+      const newAsset = { ...this.correctAsset, holdings: +this.newHoldings };
+      console.log(newAsset);
+      this.editAsset(newAsset);
+      this.newHoldings = '';
+    },
+    getCorrectAsset() {
+      const [tempAsset] = this.allAssets.filter(
+        (asset) => asset.id === this.activeCoin
+      );
+      return tempAsset;
+    },
     priceFormatter(price, currency) {
       return priceFormatter(price, currency);
     },
@@ -105,9 +122,10 @@ export default {
       return priceChangeFormatter(priceChange);
     },
   },
-  computed: mapGetters(['defaultCurrency']),
+  computed: mapGetters(['defaultCurrency', 'activeCoin', 'allAssets']),
   async created() {
     this.coin = await this.fetchCoin();
+    this.correctAsset = this.getCorrectAsset();
   },
 };
 </script>

@@ -76,10 +76,16 @@ export default {
     asset: Object,
   },
   methods: {
-    ...mapActions(['removeAsset', 'openModal', 'openEditAsset']),
+    ...mapActions([
+      'removeAsset',
+      'openModal',
+      'openEditAsset',
+      'setActiveCoin',
+    ]),
     handleClick() {
       this.openModal();
       this.openEditAsset();
+      this.setActiveCoin(this.asset.id);
     },
     priceFormatter(price, currency) {
       return priceFormatter(price, currency);
