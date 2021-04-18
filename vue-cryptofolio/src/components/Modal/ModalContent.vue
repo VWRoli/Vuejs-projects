@@ -1,18 +1,22 @@
 <template>
-  <AddNewAsset />
+  <EditAsset v-if="isEditAsset" />
+  <Success v-else-if="displaySuccess" />
+  <AddNewAsset v-else />
 </template>
 
 <script>
-///import Success from './Success';
+import { mapGetters } from 'vuex';
+import Success from './Success';
 import AddNewAsset from './AddNewAsset';
-////import EditAsset from './EditAsset';
+import EditAsset from './EditAsset';
 
 export default {
   name: 'ModalContent',
   components: {
-    // Success,
+    Success,
     AddNewAsset,
-    //EditAsset,
+    EditAsset,
   },
+  computed: mapGetters(['isEditAsset', 'displaySuccess']),
 };
 </script>

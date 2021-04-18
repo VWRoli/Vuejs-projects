@@ -1,10 +1,8 @@
 <template>
   <div id="add-new-asset">
-    <h1>Add New Asset</h1>
+    <h1>Edit Asset</h1>
 
-    <Loading v-if="isLoading" />
-
-    <section v-else>
+    <section v-if="!isLoading && !isError">
       <header>
         <img :src="coin.image" :alt="coin.name" />
 
@@ -27,6 +25,25 @@
         Current Price:
         <span>{{ priceFormatter(coin.current_price, defaultCurrency) }}</span>
       </h3>
+      <div className="your-data">
+        <h3>
+          Your Holdings:
+          <span>
+            {{ this.holdings }} <span>{{ coinsymbol }}</span>
+          </span>
+        </h3>
+        <h3>
+          Your Asset Value:
+          <span>
+            {{
+              priceFormatter(
+                coin.current_price * this.holdings,
+                defaultCurrency
+              )
+            }}
+          </span>
+        </h3>
+      </div>
       <form>
         <label for="holdings">Quantity: </label>
         <input
@@ -36,9 +53,11 @@
           :value="this.holdings"
         />
 
-        <button type="submit" class="primary-btn">Add Asset</button>
+        <button type="submit" class="primary-btn">Edit Asset</button>
       </form>
     </section>
+    <Error v-else-if="isError" />
+    <Loading v-else />
   </div>
 </template>
 
@@ -46,28 +65,38 @@
 import { mapGetters } from 'vuex';
 import { priceFormatter, priceChangeFormatter } from '../../helpers';
 import Loading from '../Loading';
+import Error from '../Error';
 
 export default {
-  name: 'EditAsset',
+  name: 'AddNewAsset',
   components: {
     Loading,
+    Error,
   },
   data() {
     return {
       isLoading: true,
+      isError: false,
       coin: {},
       holdings: '',
     };
   },
   methods: {
     async fetchCoin() {
-      const res = await fetch(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${this.defaultCurrency}&ids=bitcoin`
-      );
-      const [data] = await res.json();
-      this.isLoading = false;
+      try {
+        const res = await fetch(
+          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${this.defaultCurrency}&ids=bitcoin`
+        );
+        if (!res.ok) throw new Error(`${res.status} Coin not found`);
 
-      return data;
+        const [data] = await res.json();
+        this.isLoading = false;
+
+        return data;
+      } catch (error) {
+        this.isLoading = false;
+        this.isError = true;
+      }
     },
     priceFormatter(price, currency) {
       return priceFormatter(price, currency);
