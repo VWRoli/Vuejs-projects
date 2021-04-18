@@ -1,0 +1,84 @@
+<template>
+  <div id="add-new-asset">
+    <h1>Add New Asset</h1>
+
+    <Loading v-if="isLoading" />
+
+    <section v-else>
+      <header>
+        <img :src="coin.image" :alt="coin.name" />
+
+        <h2>
+          {{ coin.name }} <span>{{ coin.symbol }}</span>
+        </h2>
+
+        <p>
+          24h:
+          <span
+            :class="
+              coin.price_change_percentage_24h > 0 ? 'positive' : 'negative'
+            "
+          >
+            {{ priceChangeFormatter(coin.price_change_percentage_24h) }}
+          </span>
+        </p>
+      </header>
+      <h3>
+        Current Price:
+        <span>{{ priceFormatter(coin.current_price, defaultCurrency) }}</span>
+      </h3>
+      <form>
+        <label for="holdings">Quantity: </label>
+        <input
+          type="number"
+          name="holdings"
+          id="holdings"
+          :value="this.holdings"
+        />
+
+        <button type="submit" class="primary-btn">Add Asset</button>
+      </form>
+    </section>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex';
+import { priceFormatter, priceChangeFormatter } from '../../helpers';
+import Loading from '../Loading';
+
+export default {
+  name: 'EditAsset',
+  components: {
+    Loading,
+  },
+  data() {
+    return {
+      isLoading: true,
+      coin: {},
+      holdings: '',
+    };
+  },
+  methods: {
+    async fetchCoin() {
+      const res = await fetch(
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${this.defaultCurrency}&ids=bitcoin`
+      );
+      const [data] = await res.json();
+      this.isLoading = false;
+
+      return data;
+    },
+    priceFormatter(price, currency) {
+      return priceFormatter(price, currency);
+    },
+    priceChangeFormatter(priceChange) {
+      return priceChangeFormatter(priceChange);
+    },
+  },
+  computed: mapGetters(['defaultCurrency']),
+  async created() {
+    this.coin = await this.fetchCoin();
+  },
+};
+</script>

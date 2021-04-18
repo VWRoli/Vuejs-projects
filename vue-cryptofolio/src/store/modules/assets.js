@@ -23,6 +23,7 @@ const getters = {
   allCoinsInfo: (state) => state.coinsInfo,
   defaultCurrency: (state) => state.defaultCurrency,
   isLoading: (state) => state.isLoading,
+  isError: (state) => state.isError,
 };
 const actions = {
   async fetchCoinsInfo({ commit }, currencyType) {
@@ -45,12 +46,15 @@ const actions = {
       );
 
       const response = await fetch(`${formattedUrl}`);
+
+      if (!response.ok) throw new Error(`${response.status} Coin not found`);
+
       const coinInfo = await response.json();
 
       commit('SET_COINS_INFO', coinInfo);
-
       commit('DISABLE_LOADING');
     } catch (error) {
+      commit('DISABLE_LOADING');
       commit('SET_ERROR');
     }
   },

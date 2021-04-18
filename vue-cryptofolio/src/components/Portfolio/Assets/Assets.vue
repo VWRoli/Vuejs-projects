@@ -14,6 +14,7 @@
             {{ currency.toUpperCase() }}
           </option>
         </select>
+
         <!--   <select
           name="currency"
           id="currency"
@@ -34,15 +35,14 @@
         <AssetsHeader />
       </thead>
 
-      <!--  <tbody>
+      <tbody v-if="allAssets.length === 0">
         <tr>
           <td class="empty-table" colSpan="6">
             You don't have any assets in your portfolio.
           </td>
         </tr>
       </tbody>
-      ) : (
-      )}-->
+
       <AssetsTable />
     </table>
 
@@ -76,7 +76,7 @@ export default {
       return data;
     },
   },
-  computed: mapGetters(['defaultCurrency']),
+  computed: mapGetters(['defaultCurrency', 'allAssets']),
   async created() {
     this.currencyTypes = await this.fetchCurrencies();
   },

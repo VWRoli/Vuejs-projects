@@ -20,18 +20,11 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import Assets from './Assets/Assets';
 
 export default {
   components: {
     Assets,
-  },
-  methods: {
-    ...mapActions(['fetchCoinsInfo']),
-  },
-  async created() {
-    this.fetchCoinsInfo('usd');
   },
 };
 </script>

@@ -50,15 +50,11 @@
     </td>
     <!-- ACTIONS -->
 
-    <td className="actions-row">
-      <button type="button" className="edit-btn">
+    <td class="actions-row">
+      <button type="button" class="edit-btn">
         <i class="fas fa-edit icons" title="Edit transaction"></i>
       </button>
-      <button
-        type="button"
-        className="remove-btn"
-        @click="removeAsset(asset.id)"
-      >
+      <button type="button" class="remove-btn" @click="removeAsset(asset.id)">
         <i class="far fa-minus-square icons" title="Remove transaction"></i>
       </button>
     </td>
