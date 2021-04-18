@@ -1,7 +1,7 @@
 const state = {
-  isModalOpen: true,
+  isModalOpen: false,
   activeCoin: '',
-  displaySuccess: true,
+  displaySuccess: false,
   isEditAsset: false,
 };
 const getters = {
@@ -9,8 +9,30 @@ const getters = {
   displaySuccess: (state) => state.displaySuccess,
   isEditAsset: (state) => state.isEditAsset,
 };
-const actions = {};
-const mutations = {};
+const actions = {
+  openModal({ commit }) {
+    commit('OPEN_MODAL');
+  },
+  closeModal({ commit }) {
+    commit('CLOSE_MODAL');
+  },
+  openSuccess({ commit }) {
+    commit('OPEN_SUCCESS');
+  },
+  openEditAsset({ commit }) {
+    commit('OPEN_EDIT_ASSET');
+  },
+};
+const mutations = {
+  OPEN_MODAL: (state) => (state.isModalOpen = true),
+  CLOSE_MODAL: (state) => {
+    state.isModalOpen = false;
+    state.displaySuccess = false;
+    state.isEditAsset = false;
+  },
+  OPEN_SUCCESS: (state) => (state.displaySuccess = true),
+  OPEN_EDIT_ASSET: (state) => (state.isEditAsset = true),
+};
 
 export default {
   state,

@@ -29,7 +29,7 @@
         <h3>
           Your Holdings:
           <span>
-            {{ this.holdings }} <span>{{ coinsymbol }}</span>
+            {{ this.holdings }} <span>{{ coin.symbol }}</span>
           </span>
         </h3>
         <h3>

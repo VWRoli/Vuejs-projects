@@ -51,7 +51,7 @@
     <!-- ACTIONS -->
 
     <td class="actions-row">
-      <button type="button" class="edit-btn">
+      <button type="button" class="edit-btn" @click="handleClick">
         <i class="fas fa-edit icons" title="Edit transaction"></i>
       </button>
       <button type="button" class="remove-btn" @click="removeAsset(asset.id)">
@@ -76,8 +76,11 @@ export default {
     asset: Object,
   },
   methods: {
-    ...mapActions(['removeAsset']),
-
+    ...mapActions(['removeAsset', 'openModal', 'openEditAsset']),
+    handleClick() {
+      this.openModal();
+      this.openEditAsset();
+    },
     priceFormatter(price, currency) {
       return priceFormatter(price, currency);
     },
