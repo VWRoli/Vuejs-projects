@@ -3,11 +3,13 @@ const state = {
   activeCoin: '',
   displaySuccess: false,
   isEditAsset: false,
+  isAddAsset: false,
 };
 const getters = {
   isModalOpen: (state) => state.isModalOpen,
   displaySuccess: (state) => state.displaySuccess,
   isEditAsset: (state) => state.isEditAsset,
+  isAddAsset: (state) => state.isAddAsset,
   activeCoin: (state) => state.activeCoin,
 };
 const actions = {
@@ -23,6 +25,9 @@ const actions = {
   openEditAsset({ commit }) {
     commit('OPEN_EDIT_ASSET');
   },
+  openAddAsset({ commit }) {
+    commit('OPEN_ADD_ASSET');
+  },
   setActiveCoin({ commit }, id) {
     commit('SET_ACTIVE_COIN', id);
   },
@@ -37,8 +42,10 @@ const mutations = {
   OPEN_SUCCESS: (state) => {
     state.displaySuccess = true;
     state.isEditAsset = false;
+    state.isAddAsset = false;
   },
   OPEN_EDIT_ASSET: (state) => (state.isEditAsset = true),
+  OPEN_ADD_ASSET: (state) => (state.isAddAsset = true),
   SET_ACTIVE_COIN: (state, id) => (state.activeCoin = id),
 };
 

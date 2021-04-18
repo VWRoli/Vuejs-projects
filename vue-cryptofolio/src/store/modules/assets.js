@@ -67,6 +67,9 @@ const actions = {
   editAsset({ commit }, coin, holdings) {
     commit('EDIT_COIN', coin, holdings);
   },
+  addAsset({ commit }, asset) {
+    commit('ADD_ASSET', asset);
+  },
 };
 const mutations = {
   SET_COINS_INFO: (state, coins) => (state.coinsInfo = coins),
@@ -80,6 +83,7 @@ const mutations = {
     const deleteCoin = state.assets.filter((asset) => asset.id !== coin.id);
     state.assets = [...deleteCoin, coin];
   },
+  ADD_ASSET: (state, asset) => (state.assets = [...state.assets, asset]),
 };
 
 export default {

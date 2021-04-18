@@ -1,7 +1,7 @@
 <template>
   <EditAsset v-if="isEditAsset" />
   <Success v-else-if="displaySuccess" />
-  <AddNewAsset v-else />
+  <AddNewAsset v-else-if="isAddAsset" />
 </template>
 
 <script>
@@ -17,6 +17,6 @@ export default {
     AddNewAsset,
     EditAsset,
   },
-  computed: mapGetters(['isEditAsset', 'displaySuccess']),
+  computed: mapGetters(['isEditAsset', 'displaySuccess', 'isAddAsset']),
 };
 </script>

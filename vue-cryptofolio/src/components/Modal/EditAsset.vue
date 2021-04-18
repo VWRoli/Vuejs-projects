@@ -105,7 +105,6 @@ export default {
       e.preventDefault();
       this.openSuccess();
       const newAsset = { ...this.correctAsset, holdings: +this.newHoldings };
-      console.log(newAsset);
       this.editAsset(newAsset);
       this.newHoldings = '';
     },

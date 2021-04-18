@@ -25,13 +25,13 @@
         Current Price:
         <span>{{ priceFormatter(coin.current_price, defaultCurrency) }}</span>
       </h3>
-      <form>
+      <form @submit="onSubmit">
         <label for="holdings">Quantity: </label>
         <input
           type="number"
           name="holdings"
           id="holdings"
-          :value="this.holdings"
+          v-model="this.holdings"
         />
 
         <button type="submit" class="primary-btn">Add Asset</button>
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import { priceFormatter, priceChangeFormatter } from '../../helpers';
 import Loading from '../Loading';
 import Error from '../Error';
@@ -63,14 +63,16 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['openSuccess', 'addAsset']),
     async fetchCoin() {
       try {
         const res = await fetch(
-          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${this.defaultCurrency}&ids=bitcoin`
+          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${this.defaultCurrency}&ids=${this.activeCoin}`
         );
         if (!res.ok) throw new Error(`${res.status} Coin not found`);
 
         const [data] = await res.json();
+
         this.isLoading = false;
 
         return data;
@@ -85,8 +87,14 @@ export default {
     priceChangeFormatter(priceChange) {
       return priceChangeFormatter(priceChange);
     },
+    onSubmit(e) {
+      e.preventDefault();
+      const newAsset = { id: this.coin.id, holdings: +this.holdings };
+      this.openSuccess();
+      this.addAsset(newAsset);
+    },
   },
-  computed: mapGetters(['defaultCurrency']),
+  computed: mapGetters(['defaultCurrency', 'activeCoin']),
   async created() {
     this.coin = await this.fetchCoin();
   },
