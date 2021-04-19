@@ -1,5 +1,5 @@
 const state = {
-  assets: [{ id: 'bitcoin', holdings: 1 }],
+  assets: JSON.parse(localStorage.getItem('coinAssets')) || [],
   coinsInfo: [],
   defaultCurrency: 'usd',
   isLoading: false,
@@ -80,17 +80,26 @@ const actions = {
 };
 const mutations = {
   SET_COINS_INFO: (state, coins) => (state.coinsInfo = coins),
-  CLEAR_ASSETS: (state) => (state.assets = []),
-  REMOVE_ASSET: (state, id) =>
+  CLEAR_ASSETS: (state) => {
+    state.assets = [];
+    localStorage.setItem('coinAssets', JSON.stringify([]));
+  },
+  REMOVE_ASSET: (state, id) => {
     (state.assets = state.assets.filter((asset) => asset.id !== id)),
+      localStorage.setItem('coinAssets', JSON.stringify([...state.assets]));
+  },
   SET_LOADING: (state) => (state.isLoading = true),
   DISABLE_LOADING: (state) => (state.isLoading = false),
   SET_ERROR: (state) => (state.isError = true),
   EDIT_COIN: (state, coin) => {
     const deleteCoin = state.assets.filter((asset) => asset.id !== coin.id);
     state.assets = [...deleteCoin, coin];
+    localStorage.setItem('coinAssets', JSON.stringify([...state.assets]));
   },
-  ADD_ASSET: (state, asset) => (state.assets = [...state.assets, asset]),
+  ADD_ASSET: (state, asset) => {
+    state.assets = [...state.assets, asset];
+    localStorage.setItem('coinAssets', JSON.stringify([...state.assets]));
+  },
   SET_DEFAULT_CURRENCY: (state, currencyType) =>
     (state.defaultCurrency = currencyType),
   SET_QUERY: (state, query) => (state.searchQuery = query),

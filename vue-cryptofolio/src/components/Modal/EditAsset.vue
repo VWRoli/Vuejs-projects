@@ -50,7 +50,7 @@
           type="number"
           name="holdings"
           id="holdings"
-          required
+          step="0.0000001"
           v-model="newHoldings"
         />
 
