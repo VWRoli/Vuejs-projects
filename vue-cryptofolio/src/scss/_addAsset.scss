@@ -63,7 +63,9 @@
     font-weight: 400;
   }
 }
-
+.loading-table {
+  background-color: #222;
+}
 @media screen and(max-width: 1650px) {
   #asset-list {
     grid-template-columns: repeat(5, 1fr);

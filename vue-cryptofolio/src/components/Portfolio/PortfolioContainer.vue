@@ -13,7 +13,7 @@
       </button>
     </header>
     <div class="container">
-      <!--  <Stats />-->
+      <Stats />
       <Assets />
     </div>
   </section>
@@ -21,10 +21,12 @@
 
 <script>
 import Assets from './Assets/Assets';
+import Stats from './Stats/Stats';
 
 export default {
   components: {
     Assets,
+    Stats,
   },
 };
 </script>

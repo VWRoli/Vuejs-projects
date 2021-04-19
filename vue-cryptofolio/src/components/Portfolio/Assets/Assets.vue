@@ -4,9 +4,9 @@
       <h2 class="assets-title">Your Assets</h2>
       <form>
         <label html="currency">Default Currency:</label>
-        <select name="currency" id="currency">
+        <select name="currency" id="currency" @change="onChange">
           <option
-            value="currency"
+            :value="currency"
             :key="currency"
             v-for="currency in currencyTypes"
             :currency="currency"
@@ -14,21 +14,11 @@
             {{ currency.toUpperCase() }}
           </option>
         </select>
-
-        <!--   <select
-          name="currency"
-          id="currency"
-          value="{defaultCurrency}"
-          onChange="{handleChange}"
-        >
-          {currencies.map((currency) => { return (
-          <option key="{currency}" value="{currency}">
-            {currency.toUpperCase()}
-          </option>
-          ); })}
-        </select> -->
       </form>
-      <i class="fas fa-sync-alt refresh-btn"></i>
+      <i
+        class="fas fa-sync-alt refresh-btn"
+        @click="this.fetchCoinsInfo(this.defaultCurrency)"
+      ></i>
     </header>
     <table>
       <thead>
@@ -69,11 +59,15 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['clearAssets']),
+    ...mapActions(['clearAssets', 'setDefaultCurrency', 'fetchCoinsInfo']),
     async fetchCurrencies() {
       const res = await fetch(CURRENCY_URL);
       const data = await res.json();
       return data;
+    },
+    onChange(e) {
+      this.setDefaultCurrency(e.target.value);
+      this.fetchCoinsInfo(this.defaultCurrency);
     },
   },
   computed: mapGetters(['defaultCurrency', 'allAssets']),

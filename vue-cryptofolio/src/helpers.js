@@ -111,17 +111,17 @@ export const calcPieChartData = (assets, info) => {
   });
 };
 
-//todo % problems
 //Calculate percentage change
-// export const calcChangePercentage = (curValue, change) => {
-//   const percentage;
-//   const newPrice = curValue;
+export const calcChangePercentage = (curValue, change) => {
+  let percentage;
+  const newPrice = curValue;
 
-//   if (change > 0) {
-//     const oldPrice = curValue - change;
-//     return (percentage = [(newPrice - oldPrice) / oldPrice] * 100);
-//   } else {
-//     const oldPrice = curValue + Math.abs(change);
-//     return -Math.abs((percentage = [(oldPrice - newPrice) / oldPrice] * 100));
-//   }
-// };
+  if (change > 0) {
+    const oldPrice = curValue - change;
+    percentage = [(newPrice - oldPrice) / oldPrice] * 100;
+  } else {
+    const oldPrice = curValue + Math.abs(change);
+    percentage = -Math.abs([(oldPrice - newPrice) / oldPrice] * 100);
+  }
+  return percentage;
+};

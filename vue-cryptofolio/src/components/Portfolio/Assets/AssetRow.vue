@@ -94,10 +94,9 @@ export default {
       return priceChangeFormatter(priceChange);
     },
     async setCorrectCoin() {
-      this.correctCoin = await this.allCoinsInfo.filter(
+      [this.correctCoin] = await this.allCoinsInfo.filter(
         (coin) => coin.id === this.asset.id
       );
-      console.log(this.correctCoin);
     },
   },
   computed: mapGetters(['defaultCurrency', 'allAssets', 'allCoinsInfo']),
