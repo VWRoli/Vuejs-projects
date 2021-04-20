@@ -48,7 +48,7 @@
     }
   }
 }
-#asset-list {
+#asset-list div {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 2rem;
@@ -63,6 +63,7 @@
     font-weight: 400;
   }
 }
+
 .loading-table {
   background-color: #222;
 }

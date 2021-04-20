@@ -7,6 +7,8 @@ const state = {
   searchQuery: '',
   totalValue: 0,
   totalValueChange: 0,
+  chartData: [],
+  chartDays: '7',
 };
 const getters = {
   allAssets: (state) => state.assets,
@@ -46,6 +48,78 @@ const actions = {
       commit('SET_COINS_INFO', coinInfo);
       commit('GET_TOTALS');
       commit('GET_TOTAL_CHANGE');
+
+      //?Get API urls for chart
+      const chartUrls = state.assets.map(
+        (item) =>
+          `https://api.coingecko.com/api/v3/coins/${item.id}/market_chart?vs_currency=${state.defaultCurrency}&days=${state.chartDays}`
+      );
+      //Fetch chart data
+      const chartRes = await Promise.all(
+        chartUrls.map((url) => fetch(url).catch((error) => error))
+      );
+      const chartData = await Promise.all(
+        chartRes.map((response) =>
+          response.json ? response.json().catch((error) => error) : response
+        )
+      );
+
+      //todo Format chart data
+      //////////////////////////
+      //////////////////////////
+      //////////////////////////
+      const chartDataFormatter = (data, assets) => {
+        //Get prices from chart data array, because it has market and voluma data too
+
+        const priceData = data.map((item) => {
+          return item.prices;
+        });
+
+        //Calculate prices of holdings
+        const holdingPrices = priceData.map((array, i) => {
+          const currentHoldings = assets[i].holdings;
+          return array.map((item) => currentHoldings * item[1]);
+        });
+
+        if (!priceData[0]) return;
+
+        //Get timestamps for chart
+        const timeStamps = priceData[0].map((stamp) => stamp[0]);
+
+        //Get and add the total price values
+        const totalPrices = holdingPrices
+          .map((array) => array.map((el) => el))
+          .reduce((acc, curr) => acc.map((el, i) => el + curr[i]));
+
+        //Createing a data Object for the chart
+        const chartDataObj = timeStamps.map((el, i) => {
+          //Configuration
+          const options = {
+            hour: 'numeric',
+            minute: 'numeric',
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            weekday: 'long',
+          };
+
+          //Locale
+          const locale = navigator.language;
+          //Formatting the date
+          const formattedDate = new Intl.DateTimeFormat(locale, options).format(
+            new Date(el)
+          );
+
+          return { day: formattedDate, price: totalPrices[i] };
+        });
+
+        return chartDataObj;
+      };
+      //////////////////////////
+      //////////////////////////
+      //////////////////////////
+      commit('SET_CHART_DATA', chartDataFormatter(chartData, state.assets));
+      console.log(state.chartData);
       commit('DISABLE_LOADING');
     } catch (error) {
       commit('DISABLE_LOADING');
@@ -128,6 +202,7 @@ const mutations = {
       .reduce((acc, cur) => acc + cur, 0);
     state.totalValueChange = assetValueChange;
   },
+  SET_CHART_DATA: (state, chartData) => (state.chartData = chartData),
 };
 
 export default {
