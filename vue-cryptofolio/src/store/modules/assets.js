@@ -19,6 +19,7 @@ const getters = {
   searchQuery: (state) => state.searchQuery,
   totalValue: (state) => state.totalValue,
   totalValueChange: (state) => state.totalValueChange,
+  chartData: (state) => state.chartData,
 };
 const actions = {
   async fetchCoinsInfo({ commit }, currencyType) {

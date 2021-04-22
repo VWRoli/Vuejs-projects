@@ -93,6 +93,24 @@
       }
     }
   }
+  .chart-placeholder {
+    background-color: #eee;
+    height: 300px;
+    display: grid;
+    place-content: center;
+    button {
+      background-color: #fff;
+      border: 1px solid $blue-color;
+      padding: 0.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      outline: none;
+      &:hover {
+        border-color: #00e4ac;
+        background-color: #f0f0f0;
+      }
+    }
+  }
 }
 #assets {
   grid-column: span 8;

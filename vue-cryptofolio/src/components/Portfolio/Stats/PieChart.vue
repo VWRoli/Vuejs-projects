@@ -32,7 +32,7 @@ use([
 ]);
 
 export default defineComponent({
-  name: 'HelloWorld',
+  name: 'PieChart',
   components: {
     VChart,
   },
@@ -43,7 +43,7 @@ export default defineComponent({
         const [currentCoin] = info.filter((item) => asset.id === item.id);
 
         const totalValue = currentCoin.current_price * asset.holdings;
-        return { id: asset.id, value: totalValue };
+        return { name: asset.id, value: totalValue };
       });
     };
 

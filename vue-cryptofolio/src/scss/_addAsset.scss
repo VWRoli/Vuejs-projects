@@ -68,17 +68,17 @@
   background-color: #222;
 }
 @media screen and(max-width: 1650px) {
-  #asset-list {
+  #asset-list div {
     grid-template-columns: repeat(5, 1fr);
   }
 }
 @media screen and(max-width: 1200px) {
-  #asset-list {
+  #asset-list div {
     grid-template-columns: repeat(4, 1fr);
   }
 }
 @media screen and(max-width: 900px) {
-  #asset-list {
+  #asset-list div {
     grid-template-columns: repeat(3, 1fr);
   }
 }
@@ -92,12 +92,12 @@
   }
 }
 @media screen and(max-width: 675px) {
-  #asset-list {
+  #asset-list div {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 @media screen and(max-width: 500px) {
-  #asset-list {
+  #asset-list div {
     grid-template-columns: repeat(1, 1fr);
     margin: auto;
   }

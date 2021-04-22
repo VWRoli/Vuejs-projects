@@ -16,21 +16,10 @@
         }}
       </span>
     </div>
-
-    <div class="chart-btn-container">
-      <button class="chart-btn" @click="showLineChart">
-        <i class="fas fa-chart-line stat-btn-icon"></i>
-        Line Chart
-      </button>
-      <button class="chart-btn" @click="showPieChart">
-        <i class="fas fa-chart-pie stat-btn-icon"></i>
-        Pie Chart
-      </button>
+    <Charts v-if="showCharts" />
+    <div class="chart-placeholder" v-else>
+      <button type="button" @click="displayCharts">Show Charts</button>
     </div>
-    <LineChart v-if="isLineChart" />
-    <PieChart v-else />
-
-    <ChartButtons v-if="isLineChart" />
   </section>
   <section id="stats" v-else>
     <h2>Overview</h2>
@@ -46,21 +35,17 @@ import {
   calcChangePercentage,
 } from '../../../helpers';
 import Loading from '../../Loading';
-import ChartButtons from './ChartButtons';
-import LineChart from './LineChart';
-import PieChart from './PieChart';
+import Charts from './Charts';
 
 export default {
   name: 'Stats',
   components: {
+    Charts,
     Loading,
-    ChartButtons,
-    LineChart,
-    PieChart,
   },
   data() {
     return {
-      isLineChart: true,
+      showCharts: false,
     };
   },
   methods: {
@@ -73,11 +58,8 @@ export default {
     calcChangePercentage(curValue, change) {
       return calcChangePercentage(curValue, change);
     },
-    showLineChart() {
-      this.isLineChart = true;
-    },
-    showPieChart() {
-      this.isLineChart = false;
+    displayCharts() {
+      this.showCharts = true;
     },
   },
   computed: mapGetters([
